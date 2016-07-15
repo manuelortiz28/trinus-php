@@ -1,0 +1,113 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Trinus",
+		"_postman_id": "b6c2bfc0-b4ac-69bb-eaa7-0375e9aa8d23",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Drivers",
+			"description": "",
+			"item": [
+				{
+					"name": "Create Driver",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/drivers",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"name\" : \"Juan Perez\",\n\"driverPhoto\" : \"myselfie.png\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Send Driver Location",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/drivers/location",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idDriver\" : \"AC847627-111D-A31D-FF83-80E617001800\",\n  \"latitude\" :  80.3123,\n  \"longitude\" : 89.3153\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TaxiServices",
+			"description": "",
+			"item": [
+				{
+					"name": "Request taxi",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/services",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\" : \"abc\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Service by Id",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/services?serviceId=73445272-1F8F-B998-FF38-622E03CE0900",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update Service Status",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/services",
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idService\" : \"73445272-1F8F-B998-FF38-622E03CE0900\",\n  \"latitude\" : 83.874,\n  \"longitude\" : 87.193,\n  \"status\" : \"arriving\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Taxis",
+			"description": "",
+			"item": [
+				{
+					"name": "Create Taxi",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/taxis",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"plates\" : \"AXB212\",\n\"carPhoto\" : \"myphoto.png\",\n\"model\" : \"Nissan Versa\",\n\"latitude\" : 85.9231,\n\"longitude\" : 80.8227\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
