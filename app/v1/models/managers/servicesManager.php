@@ -184,7 +184,6 @@ class ServicesManager implements InjectionAwareInterface
             }
 
             $taxi = $taxiResults[0];
-            //TODO assign driver to the service
             $service->vehicle = $taxi;
             $service->driver = $taxi->driver;
 

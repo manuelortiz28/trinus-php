@@ -19,21 +19,21 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"name\" : \"Juan Perez\",\n\"driverPhoto\" : \"myselfie.png\"\n}"
+							"raw": "{\n    \"name\" : \"Michael Jackson\",\n    \"driverPhoto\" : \"myselfie.png\"\n}"
 						},
 						"description": ""
 					},
 					"response": []
 				},
 				{
-					"name": "Send Driver Location",
+					"name": "Update Driver Location",
 					"request": {
 						"url": "{{url}}/{{trinusAppName}}/api/v1/drivers/location",
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"idDriver\" : \"AC847627-111D-A31D-FF83-80E617001800\",\n  \"latitude\" :  80.3123,\n  \"longitude\" : 89.3153\n}"
+							"raw": "{\n  \"idDriver\" : \"AC847627-111D-A31D-FF83-80E617001800\",\n  \"latitude\" :  19.178034,\n  \"longitude\" : -96.142260,\n  \"tokenGCM\" : \"KDASM9342jdads\"\n}"
 						},
 						"description": ""
 					},
@@ -46,14 +46,34 @@
 			"description": "",
 			"item": [
 				{
+					"name": "Get Taxi Location By Service",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/services/location?idService=9AA34ADF-4E2A-B752-FF45-6DD4BDDFF800",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "Request taxi",
 					"request": {
 						"url": "{{url}}/{{trinusAppName}}/api/v1/services",
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\" : \"abc\"\n}"
+							"raw": "{\n  \"userId\" : \"abc\",\n  \"latitude\" : 19.176113,\n  \"longitude\" : -96.120925,\n  \"address\" : \"Diaz Miron 1324 Colonia Centro, Veracruz\",\n  \"userGCMToken\" : \"APA91bHejrzxM47oO_hWqgu6uKguty-Qs5QCJTOSGNNpVU4BPOxhUNXA7EFOUF-sscxP9C6vxzVvyHE96UJ9L8bdtmr2hbbDe7inSk3wVtAXnJbmgaTWmUA\"\n}"
 						},
 						"description": ""
 					},
@@ -62,7 +82,7 @@
 				{
 					"name": "Get Service by Id",
 					"request": {
-						"url": "{{url}}/{{trinusAppName}}/api/v1/services?serviceId=73445272-1F8F-B998-FF38-622E03CE0900",
+						"url": "{{url}}/{{trinusAppName}}/api/v1/services?serviceId=9AA34ADF-4E2A-B752-FF45-6DD4BDDFF800",
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -81,7 +101,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"idService\" : \"73445272-1F8F-B998-FF38-622E03CE0900\",\n  \"latitude\" : 83.874,\n  \"longitude\" : 87.193,\n  \"status\" : \"arriving\"\n}"
+							"raw": "{\n  \"idService\" : \"344A1FCE-D600-14A9-FF67-82E80F960B00\",\n  \"latitude\" : 83.874,\n  \"longitude\" : 87.193,\n  \"status\" : \"assigned\",\n  \"idDriver\" : \"AC847627-111D-A31D-FF83-80E617001800\"\n}"
 						},
 						"description": ""
 					},
