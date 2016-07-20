@@ -18,12 +18,15 @@ require $folderApp."/models/managers/authenticationManager.php";
 require $folderApp."/models/managers/taxisManager.php";
 require $folderApp."/models/managers/driversManager.php";
 require $folderApp."/models/managers/servicesManager.php";
+require $folderApp."/models/managers/pushNotificationsManager.php";
+
 require $folderApp."/models/exceptions/yummyException.php";
 
 $di->setShared("mealsManager", 'MealsManager');
 $di->setShared("taxisManager", 'TaxisManager');
 $di->setShared("driversManager", 'DriversManager');
 $di->setShared("servicesManager", 'ServicesManager');
+$di->setShared("pushNotificationsManager", 'PushNotificationsManager');
 $di->setShared("responseManager", 'ResponseManager');
 
 // Define the routes here

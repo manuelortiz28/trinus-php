@@ -50,11 +50,12 @@ class DriversManager implements InjectionAwareInterface
         $taxi = $results[0];
         $taxi->latitude = $driverInfo->latitude;
         $taxi->longitude = $driverInfo->longitude;
+        $taxi->tokenGCM = $driverInfo->tokenGCM;
 
         try {
             Backendless::$Persistence->save($taxi);
         } catch(Exception $e){
-            throw new YummyException("Error Processing Request updateDriverLocation ".$e->getMessage().", ".$condition, 500);
+            throw new YummyException("Error Processing Request updateDriverLocation ".$e->getMessage(), 500);
         }
     }
 

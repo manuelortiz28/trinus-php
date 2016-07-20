@@ -17,16 +17,29 @@ $app->get("/services", function () use ($app, $di) {
     }
 });
 
-$app->post("/services", function () use ($app, $di) {
+$app->get("/services/location", function () use ($app, $di) {
+    $servicesManager = $di->get("servicesManager");
+    $responseManager = $di->get("responseManager");
+
+    $idService = $app->request->get("idService");
+
+    try {
+        return $responseManager->getResponse($servicesManager->getTaxiServiceLocation($idService));
+    } catch(YummyException $e){
+        return $responseManager->getErrorResponse($e);
+    } catch(Exception $e) {
+        return $responseManager->getGenericErrorResponse($e);
+    }
+});
+
+$app->post("/services", function () use ($di, $app) {
     $servicesManager = $di->get("servicesManager");
     $responseManager = $di->get("responseManager");
 
     try {
-        $user = $app->request->getJsonRawBody();
+        $userData = $app->request->getJsonRawBody();
 
-        return $responseManager->getResponse(
-            array('services' => $servicesManager->createService($user))
-        );
+        return $responseManager->getResponse($servicesManager->createService($userData));
     } catch(YummyException $e){
         return $responseManager->getErrorResponse($e);
     } catch(Exception $e) {

@@ -91,7 +91,8 @@
                 else if ($field == "createdAt")
                     $valueField = $entity->created();
                 else
-                    $valueField = $entity->getProperty($field);
+					$valueField = $entity->getProperty($field);
+
 
 				$attributes += array($field => $valueField);
 			}

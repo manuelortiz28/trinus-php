@@ -19,32 +19,6 @@ class TaxisManager implements InjectionAwareInterface
         return $this->_di;
     }
 
-    public function getTaxis($name, $user)
-    {
-        $mealQuery = new BackendlessDataQuery();
-        $mealQuery->setDepth(1);
-
-        $condition = "user.objectId = '" . $user->getObjectId() . "'";
-
-        if ($name) {
-            $condition = $condition . " and name LIKE '" . $name . "%'";
-        }
-
-        $mealQuery->setWhereClause($condition);
-        $results = Backendless::$Persistence->of('Meal')->find($mealQuery)->getAsClasses();
-
-        $i = 0;
-        $rows = [];
-        foreach ($results as $pMeal) {
-            $pMeal->setProperty("fileName", "/public/images/" . $pMeal->getFileName() . ".jpg");
-            $mealAttrs = $this->_di->get("responseManager")->getAttributes($this->fields, $pMeal);
-
-            $rows[$i++] = $mealAttrs;
-        }
-
-        return $rows;
-    }
-
     public function createTaxi($taxi) {
         $pTaxi = new yummy\models\Taxi();
         $pTaxi->setProperty("plates",$taxi->plates);

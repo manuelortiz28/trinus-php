@@ -20,7 +20,7 @@ $app->post("/drivers/location", function () use ($di, $app) {
     $responseManager = $di->get("responseManager");
 
     try {
-        $driver = $app->request->getJsonRawBody();//idDriver, latitude, longitude
+        $driver = $app->request->getJsonRawBody();//idDriver, latitude, longitude, tokenGCM
 
         $driversManager->updateDriverLocation($driver);
 

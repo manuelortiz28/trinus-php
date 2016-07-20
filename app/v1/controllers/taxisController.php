@@ -5,9 +5,7 @@ $app->get("/taxis", function () use ($app, $di) {
     $responseManager = $di->get("responseManager");
 
     try {
-        return $responseManager->getResponse(
-            array('taxis' => $taxisManager->getTaxis())
-        );
+        return $responseManager->getResponse($taxisManager->getTaxis());
     } catch(YummyException $e){
         return $responseManager->getErrorResponse($e);
     } catch(Exception $e) {
