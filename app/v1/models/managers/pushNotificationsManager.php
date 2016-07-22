@@ -9,12 +9,10 @@ use Phalcon\DI\InjectionAwareInterface;
  */
 class PushNotificationsManager implements InjectionAwareInterface
 {
-    // API access key from Google API's Console
-    const API_ACCESS_KEY = "AIzaSyA5b7usl3Y9hICD76nL91oxDuDR-FBf3Ts";
-    const GCM_URL = "https://android.googleapis.com/gcm/send";// https://gcm-http.googleapis.com/gcm/send , https://android.googleapis.com/gcm/send
+    const GCM_URL = "https://android.googleapis.com/gcm/send";// https://gcm-http.googleapis.com/gcm/send
     var $headers = array
         (
-            'Authorization: key=' . PushNotificationsManager::API_ACCESS_KEY,
+            'Authorization: key=AIzaSyA5b7usl3Y9hICD76nL91oxDuDR-FBf3Ts',// API access key from Google API's Console
             'Content-Type: application/json'
         );
     protected $_di;
