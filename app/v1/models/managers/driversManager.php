@@ -50,7 +50,7 @@ class DriversManager implements InjectionAwareInterface
         $taxi = $results[0];
         $taxi->latitude = $driverInfo->latitude;
         $taxi->longitude = $driverInfo->longitude;
-        $taxi->tokenGCM = $driverInfo->tokenGCM;
+        $taxi->driver->gcmToken = $driverInfo->tokenGCM;
 
         try {
             Backendless::$Persistence->save($taxi);
