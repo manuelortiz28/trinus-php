@@ -84,8 +84,8 @@ class ServicesManager implements InjectionAwareInterface
         $body = [];
         $body["idService"] = $service->objectId;
         $body["destinationAddress"] = $service->targetAddress;
-        $body["userLatitude"] = $service->latitude;
-        $body["userLongitude"] = $service->longitude;
+        $body["userLatitude"] = $service->startLatitude;
+        $body["userLongitude"] = $service->startLongitude;
 
         //Creates info object
         $message = [];
