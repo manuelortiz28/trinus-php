@@ -52,6 +52,8 @@ class DriversManager implements InjectionAwareInterface
         $taxi->longitude = $driverInfo->longitude;
         $taxi->driver->gcmToken = $driverInfo->tokenGCM;
 
+        error_log("updateDriverLocation(".$driverInfo->latitude.",".$driverInfo->longitude);
+
         try {
             Backendless::$Persistence->save($taxi);
         } catch(Exception $e){
