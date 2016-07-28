@@ -36,6 +36,21 @@ class TaxisManager implements InjectionAwareInterface
         return $this->_di->get("responseManager")->getAttributes($this->fields, $pTaxi);
     }
 
+    public function getTaxis()
+    {
+        $results = Backendless::$Persistence->of('Taxi')->find()->getAsClasses();
+
+        $i=0;
+        $rows=[];
+        foreach($results as $pTaxi) {
+            $taxiAttrs = $this->_di->get("responseManager")->getAttributes($this->fields, $pTaxi);
+
+            $rows[$i++] = $taxiAttrs;
+        }
+
+        return $rows;
+    }
+
     public function parseToArray($taxi) {
         return $this->_di->get("responseManager")->getAttributes($this->fields, $taxi);
     }

@@ -29,6 +29,13 @@ $di->setShared("servicesManager", 'ServicesManager');
 $di->setShared("pushNotificationsManager", 'PushNotificationsManager');
 $di->setShared("responseManager", 'ResponseManager');
 
+
+$app['views'] =  function () use ($folderApp) {
+    $view = new \Phalcon\Mvc\View\Simple();
+    $view->setViewsDir($folderApp.'/views/');
+    return $view;
+};
+
 // Define the routes here
 require $folderApp."/controllers/appController.php";
 

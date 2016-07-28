@@ -1,4 +1,5 @@
 <?php
+use Phalcon\Http\Response;
 
 $app->get("/taxis", function () use ($app, $di) {
     $taxisManager = $di->get("taxisManager");
@@ -26,6 +27,10 @@ $app->post("/taxis", function () use ($di, $app) {
     } catch(Exception $e) {
         return $responseManager->getGenericErrorResponse($e);
     }
+});
+
+$app->get("/map", function () use ($di, $app) {
+    echo $app['views'] ->render('taxis/map');
 });
 
 ?>

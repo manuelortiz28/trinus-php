@@ -1,0 +1,69 @@
+<html>
+<head>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+
+    var map;
+    var firstTime = false;
+    var markers = [];
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {   lat: 47.608904, lng: -122.327743 },
+            zoom: 15
+        });
+
+        loadTaxis();
+        setInterval(loadTaxis, 1000);
+    }
+
+    function removeMarkers() {
+        $.each(markers, function (index, marker) {
+            marker.setMap(null);
+        });
+    }
+
+    function loadTaxis() {
+        $.getJSON( "taxis", function( taxis ) {
+            removeMarkers();
+            var bounds = new google.maps.LatLngBounds();
+
+            $.each(taxis, function (index, taxi) {
+                // Create a marker and set its position.
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: {lat: taxi.latitude, lng: taxi.longitude},
+                    title: 'Hello World!',
+                    icon: "../../public/images/trinus.png"
+                });
+
+                markers.push(marker);
+                bounds.extend(marker.getPosition());
+            });
+
+            if (firstTime) {
+                map.fitBounds(bounds);
+                firstTime = false;
+            }
+        });
+    }
+</script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfKu2GFF15v1OV5wL_Hg-lXuOqd0bfLE&callback=initMap"
+    async defer>
+</script>
+</body>
+</html>

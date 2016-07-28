@@ -33,6 +33,8 @@ class ServicesManager implements InjectionAwareInterface
             throw new YummyException("Service Not Found", 404);
         }
 
+        error_log("getTaxiServiceLocation(".)
+
         return $this->_di->get("responseManager")->getAttributes(
             array("latitude", "longitude"),
             $results[0]->vehicle);
@@ -109,7 +111,13 @@ class ServicesManager implements InjectionAwareInterface
         $message["type"] = "SERVICE_CHANGE_STATUS";
         $message["message"] = json_encode($body);
 
-        $this->_di->get("pushNotificationsManager")->send($message, array($service->getProperty("userGCMToken")));
+        if ($service->status == "ACCEPTED" || $service->status == "ARRIVING"  || $service->status == "CANCELEDBYDRIVER") {
+            $targetGCMToken = $service->getProperty("userGCMToken");
+        } else {
+            $targetGCMToken = $service->driver->getProperty("gcmToken");
+        }
+
+        $this->_di->get("pushNotificationsManager")->send($message, array($targetGCMToken));
     }
 
     public function getService($serviceId) {
