@@ -194,11 +194,11 @@ class ServicesManager implements InjectionAwareInterface
             $taxi = $taxiResults[0];
             $service->vehicle = $taxi;
             $service->driver = $taxi->driver;
-
-            $this->sendChangeServiceStatusPushNotification($service);
         } else {
             $taxi = $results[0]->vehicle;
         }
+
+        $this->sendChangeServiceStatusPushNotification($service);
 
         try {
             Backendless::$Persistence->save($service);
@@ -208,6 +208,7 @@ class ServicesManager implements InjectionAwareInterface
 
         //Update taxi coordinates
         if ($taxi != null) {
+            error_log("updateService(".$serviceInfo->latitude.",".$serviceInfo->longitude);
             $taxi->latitude = $serviceInfo->latitude;
             $taxi->longitude = $serviceInfo->longitude;
         }
