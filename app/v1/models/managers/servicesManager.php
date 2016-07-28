@@ -33,7 +33,7 @@ class ServicesManager implements InjectionAwareInterface
             throw new YummyException("Service Not Found", 404);
         }
 
-        error_log("getTaxiServiceLocation(".)
+        error_log("getTaxiServiceLocation(".$results[0]->vehicle->getProperty("latitude").$results[0]->vehicle->getProperty("longitude"));
 
         return $this->_di->get("responseManager")->getAttributes(
             array("latitude", "longitude"),
