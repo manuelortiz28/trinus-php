@@ -6,7 +6,7 @@ use Phalcon\DI\InjectionAwareInterface;
 
 class ServicesManager implements InjectionAwareInterface
 {
-    private $fields = array("objectId", "status", "user", "vehicle");
+    private $fields = array("objectId", "status", "user", "vehicle", "targetAddress");
     protected $_di;
 
     public function setDI(Phalcon\DiInterface $dependencyInjector)
@@ -120,7 +120,21 @@ class ServicesManager implements InjectionAwareInterface
         $this->_di->get("pushNotificationsManager")->send($message, array($targetGCMToken));
     }
 
-    public function getService($serviceId) {
+    public function getServices() {
+        $results = Backendless::$Persistence->of('TaxiService')->find()->getAsClasses();
+
+        $i=0;
+        $rows=[];
+        foreach($results as $pService) {
+            $serviceAttrs = $this->_di->get("responseManager")->getAttributes($this->fields, $pService);
+
+            $rows[$i++] = $serviceAttrs;
+        }
+
+        return $rows;
+    }
+
+    public function getServiceById($serviceId) {
         $serviceQuery = new BackendlessDataQuery();
         $serviceQuery->setDepth(1);
 

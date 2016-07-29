@@ -1,19 +1,31 @@
 <?php
 
 $app->get("/services", function () use ($app, $di) {
+    $acceptHeader = $app->request->getHeader('Accept');
     $servicesManager = $di->get("servicesManager");
     $responseManager = $di->get("responseManager");
 
-    try {
-        $serviceId = $app->request->get("serviceId");
+    if ($acceptHeader == "application/json") {
+        try {
 
-        return $responseManager->getResponse(
-            $servicesManager->getService($serviceId)
-        );
-    } catch(YummyException $e){
-        return $responseManager->getErrorResponse($e);
-    } catch(Exception $e) {
-        return $responseManager->getGenericErrorResponse($e);
+            if ($app->request->get("serviceId") != null) {
+                $serviceId = $app->request->get("serviceId");
+
+                return $responseManager->getResponse(
+                    $servicesManager->getServiceById($serviceId)
+                );
+            } else {
+                return $responseManager->getResponse(
+                    $servicesManager->getServices()
+                );
+            }
+        } catch (YummyException $e) {
+            return $responseManager->getErrorResponse($e);
+        } catch (Exception $e) {
+            return $responseManager->getGenericErrorResponse($e);
+        }
+    } else {
+        echo $app['views'] ->render('services/list');
     }
 });
 

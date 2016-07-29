@@ -33,7 +33,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"idDriver\" : \"AC847627-111D-A31D-FF83-80E617001800\",\n  \"latitude\" :  19.178034,\n  \"longitude\" : -96.142260,\n  \"tokenGCM\" : \"KDASM9342jdads\"\n}"
+							"raw": "{\n  \"idDriver\" : \"AC847627-111D-A31D-FF83-80E617001800\",\n  \"latitude\" :  19.178034,\n  \"longitude\" : -96.142260,\n  \"tokenGCM\" : \"APA91bHb0mtI7OghCnIyeUo19awHDgiLGUYV16bjEPBIywKhxwEL2aXXKv-XJAeuUuYP1WhjUzdraKRvmoEfBAIeyA2jA2Ln4c_Lx_zBgVBQCBbJMLLWlYg\"\n}"
 						},
 						"description": ""
 					},
@@ -48,7 +48,7 @@
 				{
 					"name": "Get Taxi Location By Service",
 					"request": {
-						"url": "{{url}}/{{trinusAppName}}/api/v1/services/location?idService=9AA34ADF-4E2A-B752-FF45-6DD4BDDFF800",
+						"url": "{{url}}/{{trinusAppName}}/api/v1/services/location?idService=56FB10C5-D260-AC17-FF27-4C08EC5C2200",
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -84,7 +84,13 @@
 					"request": {
 						"url": "{{url}}/{{trinusAppName}}/api/v1/services?serviceId=9AA34ADF-4E2A-B752-FF45-6DD4BDDFF800",
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": []
@@ -101,7 +107,41 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"idService\" : \"344A1FCE-D600-14A9-FF67-82E80F960B00\",\n  \"latitude\" : 83.874,\n  \"longitude\" : 87.193,\n  \"status\" : \"assigned\",\n  \"idDriver\" : \"AC847627-111D-A31D-FF83-80E617001800\"\n}"
+							"raw": "{\n  \"idService\" : \"29756CBA-8E58-3979-FF94-6AD9DA3CF400\",\n  \"latitude\" : 83.874,\n  \"longitude\" : 87.193,\n  \"status\" : \"assigned\",\n  \"idDriver\" : \"AC847627-111D-A31D-FF83-80E617001800\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Services html page",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/services",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Services List",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/services",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
 						},
 						"description": ""
 					},
@@ -122,6 +162,34 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\"plates\" : \"AXB212\",\n\"carPhoto\" : \"myphoto.png\",\n\"model\" : \"Nissan Versa\",\n\"latitude\" : 85.9231,\n\"longitude\" : 80.8227\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Taxis",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/taxis",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Taxis Map",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/map",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
 						},
 						"description": ""
 					},

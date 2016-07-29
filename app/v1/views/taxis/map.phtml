@@ -1,69 +1,230 @@
 <html>
-<head>
-    <style type="text/css">
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+    <head>
+        <style type="text/css">
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
 
-        #map {
-            height: 100%;
-        }
-    </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-</head>
-<body>
-<div id="map"></div>
-<script type="text/javascript">
+            #map {
+                height: 100%;
+            }
+        </style>
 
-    var map;
-    var firstTime = false;
-    var markers = [];
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: {   lat: 47.608904, lng: -122.327743 },
-            zoom: 15
-        });
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="../../public/js/jquery.easing.min.js"></script>
+    </head>
 
-        loadTaxis();
-        setInterval(loadTaxis, 1000);
-    }
+    <body>
 
-    function removeMarkers() {
-        $.each(markers, function (index, marker) {
-            marker.setMap(null);
-        });
-    }
+        <div id="map"></div>
 
-    function loadTaxis() {
-        $.getJSON( "taxis", function( taxis ) {
-            removeMarkers();
-            var bounds = new google.maps.LatLngBounds();
+        <script type="text/javascript">
+            var map;
+            var firstTime = true;
+            var directionsDisplay;
+            var taxisMap = {};
+            var fakeTaxis = [];
+            var addresses = [];
+            var displayingServices = false;
 
-            $.each(taxis, function (index, taxi) {
-                // Create a marker and set its position.
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: {lat: taxi.latitude, lng: taxi.longitude},
-                    title: 'Hello World!',
-                    icon: "../../public/images/trinus.png"
+            var FakeTaxi = function (plates, start) {
+                this.plates = plates;
+                this.points = [];
+                this.currentIndexPoint = 0;
+                this.start = start;
+                this.end = "";
+                this.marker = null;
+            };
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {   lat: 47.608904, lng: -122.327743 },
+                    zoom: 15
+                });
+                directionsDisplay = new google.maps.DirectionsRenderer({
+                    map: map
                 });
 
-                markers.push(marker);
-                bounds.extend(marker.getPosition());
-            });
-
-            if (firstTime) {
-                map.fitBounds(bounds);
-                firstTime = false;
+                createAddresses();
+                loadTaxis();
+                setInterval(loadTaxis, 2000);
             }
-        });
-    }
-</script>
-<script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfKu2GFF15v1OV5wL_Hg-lXuOqd0bfLE&callback=initMap"
-    async defer>
-</script>
-</body>
+
+            function createAddresses() {
+                addresses.push("701 5th Ave, Seattle, WA 98104");
+                addresses.push("1028 Madison Street, Seattle, WA 98101");
+                addresses.push("427 12th Ave, Seattle, WA 98122");
+                addresses.push("80 Madison St, Seattle, WA 98104");
+                addresses.push("2203 1st Ave, Seattle, WA 98121");
+                addresses.push("2033 6th Ave, Seattle, WA 98121");
+                addresses.push("109 Eastlake Ave E, Seattle, WA 98109");
+                addresses.push("1117 12th Ave, Seattle, WA 98122");
+            }
+
+            function createFakeTaxis() {
+                fakeTaxis.push(new FakeTaxi("ABC", getAddress("")));
+                fakeTaxis.push(new FakeTaxi("DEF", getAddress("")));
+                fakeTaxis.push(new FakeTaxi("GHI", getAddress("")));
+
+                $.each(fakeTaxis, function(index, fakeTaxi) {
+                    var fakeMarker = new SlidingMarker({
+                        //var fakeMarker = new google.maps.Marker({
+                        map: map,
+                        title: fakeTaxi.plates,
+                        icon: "../../public/images/trinus.png"
+                    });
+
+                    fakeTaxi.marker = fakeMarker;
+                    fakeTaxi.end = getAddress(fakeTaxi.start);
+
+                    createRoute(fakeTaxi);
+                });
+            }
+
+            function getAddress(currentAddress) {
+
+                var index = 0;
+                do {
+                    index = parseInt(Math.random() * addresses.length, 10);
+
+                    console.log(index + " - " + addresses[index]);
+                } while(addresses[index] == currentAddress);
+
+                return addresses[index];
+            }
+
+            function nextStep() {
+                $.each(fakeTaxis, function(index, fakeTaxi) {
+
+                    if (fakeTaxi.currentIndexPoint < fakeTaxi.points.length) {
+
+                        console.log(fakeTaxi.plates + " moving");
+
+                        var latlng = new google.maps.LatLng(
+                            fakeTaxi.points[fakeTaxi.currentIndexPoint].lat(),
+                            fakeTaxi.points[fakeTaxi.currentIndexPoint].lng());
+                        fakeTaxi.marker.setPosition(latlng);
+                        fakeTaxi.marker.setMap(map);
+
+                        fakeTaxi.currentIndexPoint++;
+                    } else {
+                        console.log(fakeTaxi.plates + " new address");
+
+                        fakeTaxi.start = fakeTaxi.end;
+                        fakeTaxi.end = getAddress(fakeTaxi.start);
+                        createRoute(fakeTaxi);
+                    }
+                });
+
+            }
+
+            function createRoute(fakeTaxi) {
+                // Set destination, origin and travel mode.
+                var request = {
+                    destination: fakeTaxi.end,
+                    origin: fakeTaxi.start,
+                    travelMode: 'DRIVING'
+                };
+
+                // Pass the directions request to the directions service.
+                var directionsService = new google.maps.DirectionsService();
+                directionsService.route(request, function(response, status) {
+                    if (status == 'OK') {
+                        // Display the route on the map.
+                        //directionsDisplay.setDirections(response);
+
+                        fakeTaxi.points = response.routes[0].overview_path;
+                        var latlng = new google.maps.LatLng(fakeTaxi.points[0].lat(), fakeTaxi.points[0].lng());
+                        fakeTaxi.marker.setPosition(latlng);
+
+                        fakeTaxi.currentIndexPoint = 0;
+                    }
+                });
+            }
+
+            function removeMarkers(taxis) {
+                var taxisIds = {};
+                $.each(taxis, function (index, taxi) {
+                    taxisIds[taxi.objectId] = true;
+                });
+
+                $.each(taxisMap, function (index, marker) {
+                    if (typeof taxisIds[index] === "undefined") {
+                        marker.setMap(null);
+                        taxisMap[index] = null;
+                    }
+                });
+            }
+
+            function loadTaxis() {
+                $.getJSON( "taxis", function( taxis ) {
+                    removeMarkers(taxis);
+                    nextStep();
+
+                    var bounds = new google.maps.LatLngBounds();
+
+                    $.each(taxis, function (index, taxi) {
+
+                        if (typeof taxisMap[taxi.objectId] === "undefined" || taxisMap[taxi.objectId] == null) {
+                            // Create a marker and set its position.
+                            //var marker = new google.maps.Marker({
+                            var marker = new SlidingMarker({
+                                map: map,
+                                position: {lat: taxi.latitude, lng: taxi.longitude},
+                                title: 'Hello World!',
+                                icon: "../../public/images/trinus.png"
+                            });
+
+                            taxisMap[taxi.objectId] = marker;
+
+                            bounds.extend(marker.getPosition());
+                        } else {
+                            var latlng = new google.maps.LatLng(taxi.latitude, taxi.longitude);
+                            taxisMap[taxi.objectId].setPosition(latlng);
+                        }
+
+                    });
+
+                    if (firstTime) {
+                        //map.fitBounds(bounds);
+                        firstTime = false;
+                        createFakeTaxis();
+                    }
+                });
+            }
+
+            function showDetails() {
+                if (displayingServices) {
+                    $("#divServices").html("<body></body>");
+                } else {
+                    $("#divServices").load("services");
+                }
+
+                displayingServices = !displayingServices;
+            }
+
+        </script>
+
+        <div style="position: absolute; right:20px; top:10px;">
+
+            <a href="javascript:showDetails();">
+                <div style="background-image: url('../../public/images/floating_button_background_48x.png'); width: 48px; height: 48px; display: table-cell; vertical-align:middle; text-align: center;">
+                    <img src="../../public/images/ic_list_black_24dp_1x.png" width="24px" height="24px" />
+                </div>
+
+            </a>
+        </div>
+        <div id="divServices" style="position: absolute; right:20px; top:70px;"></div>
+
+
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfKu2GFF15v1OV5wL_Hg-lXuOqd0bfLE&callback=initMap"
+            async defer>
+        </script>
+        <script src="../../public/js/SlidingMarker.min.js" async defer></script>
+        <script src="../../public/js/markerAnimate.js" async defer></script>
+
+    </body>
 </html>
