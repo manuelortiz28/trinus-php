@@ -144,7 +144,7 @@ class ServicesManager implements InjectionAwareInterface
         $results = Backendless::$Persistence->of('TaxiService')->find($serviceQuery)->getAsClasses();
 
         if (count($results) == 0) {
-            throw new YummyException("Error Processing Request createService ".$condition, 404);
+            throw new YummyException("Error Processing Request getServiceById where ".$condition, 404);
         }
 
         $responseManager = $this->_di->get("responseManager");

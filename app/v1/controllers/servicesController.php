@@ -5,8 +5,10 @@ $app->get("/services", function () use ($app, $di) {
     $servicesManager = $di->get("servicesManager");
     $responseManager = $di->get("responseManager");
 
-    if ($acceptHeader == "application/json") {
-        try {
+    try {
+        if (strpos($acceptHeader, "text/html") !== false) {
+            echo $app['views'] ->render('services/list');
+        } else {
 
             if ($app->request->get("serviceId") != null) {
                 $serviceId = $app->request->get("serviceId");
@@ -19,13 +21,11 @@ $app->get("/services", function () use ($app, $di) {
                     $servicesManager->getServices()
                 );
             }
-        } catch (YummyException $e) {
-            return $responseManager->getErrorResponse($e);
-        } catch (Exception $e) {
-            return $responseManager->getGenericErrorResponse($e);
         }
-    } else {
-        echo $app['views'] ->render('services/list');
+    } catch (YummyException $e) {
+        return $responseManager->getErrorResponse($e);
+    } catch (Exception $e) {
+        return $responseManager->getGenericErrorResponse($e);
     }
 });
 

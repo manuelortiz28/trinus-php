@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Trinus",
-		"_postman_id": "b6c2bfc0-b4ac-69bb-eaa7-0375e9aa8d23",
+		"_postman_id": "6084381c-f718-1237-6a9f-fda4eddb680b",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -82,7 +82,7 @@
 				{
 					"name": "Get Service by Id",
 					"request": {
-						"url": "{{url}}/{{trinusAppName}}/api/v1/services?serviceId=9AA34ADF-4E2A-B752-FF45-6DD4BDDFF800",
+						"url": "{{url}}/{{trinusAppName}}/api/v1/services?serviceId=28B0AAD7-D846-0CA9-FF7C-F557CA4B4300",
 						"method": "GET",
 						"header": [
 							{
@@ -118,7 +118,13 @@
 					"request": {
 						"url": "{{url}}/{{trinusAppName}}/api/v1/services",
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"description": ""
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": []
