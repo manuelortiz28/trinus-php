@@ -38,6 +38,10 @@
                 this.marker = null;
             };
 
+            $(document).ready(function() {
+                initMap();
+            });
+
             function initMap() {
                 map = new google.maps.Map(document.getElementById('map'), {
                     center: {   lat: 47.608904, lng: -122.327743 },
@@ -219,12 +223,9 @@
         <div id="divServices" style="position: absolute; right:20px; top:70px;"></div>
 
 
-        <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfKu2GFF15v1OV5wL_Hg-lXuOqd0bfLE&callback=initMap"
-            async defer>
-        </script>
-        <script src="../../public/js/SlidingMarker.min.js" async defer></script>
-        <script src="../../public/js/markerAnimate.js" async defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxfKu2GFF15v1OV5wL_Hg-lXuOqd0bfLE"></script>
+        <script src="../../public/js/SlidingMarker.min.js"></script>
+        <script src="../../public/js/markerAnimate.js"></script>
 
     </body>
 </html>
