@@ -1,6 +1,5 @@
 <html>
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
     <style type="text/css">
         table {
@@ -58,24 +57,27 @@
 
                     $table = $("#tblServices");
                     $table.show();
+                    $body = $table.find("tbody");
 
                     $.each(services, function (index, service) {
 
-                        $table.find("tbody").append(
-                            $("<tr></tr>").append(
-                                $("<td></td>").html(service.vehicle.model)
-                            ).append(
-                                $("<td></td>").html(service.vehicle.plates)
-                            ).append(
-                                $("<td></td>").html(service.status)
-                            ).append(
-                                $("<td></td>").html(service.vehicle.driver.name)
-                            ).append(
-                                $("<td></td>").html(service.user)
-                            ).append(
-                                $("<td></td>").html(service.targetAddress)
-                            )
-                        );
+                        if (service.vehicle != null && typeof service.vehicle !== "undefined") {
+                            $body.append(
+                                $("<tr></tr>").append(
+                                    $("<td></td>").html(service.vehicle.model)
+                                ).append(
+                                    $("<td></td>").html(service.vehicle.plates)
+                                ).append(
+                                    $("<td></td>").html(service.status)
+                                ).append(
+                                    $("<td></td>").html(service.vehicle.driver.name)
+                                ).append(
+                                    $("<td></td>").html(service.user)
+                                ).append(
+                                    $("<td></td>").html(service.targetAddress)
+                                )
+                            );
+                        }
                     });
                 },
                 beforeSend: setHeader
