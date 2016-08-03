@@ -80,7 +80,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Service by Id",
+					"name": "Find Service by Id",
 					"request": {
 						"url": "{{url}}/{{trinusAppName}}/api/v1/services?serviceId=28B0AAD7-D846-0CA9-FF7C-F557CA4B4300",
 						"method": "GET",
@@ -114,7 +114,7 @@
 					"response": []
 				},
 				{
-					"name": "Services html page",
+					"name": "Services List HTML",
 					"request": {
 						"url": "{{url}}/{{trinusAppName}}/api/v1/services",
 						"method": "GET",
@@ -167,18 +167,44 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\"plates\" : \"AXB212\",\n\"carPhoto\" : \"myphoto.png\",\n\"model\" : \"Nissan Versa\",\n\"latitude\" : 85.9231,\n\"longitude\" : 80.8227\n}"
+							"raw": "{\n\"plates\" : \"XYZ912\",\n\"carPhoto\" : \"myphoto.png\",\n\"model\" : \"Toyota Prius\",\n\"latitude\" : 85.9231,\n\"longitude\" : 80.8227\n}"
 						},
 						"description": ""
 					},
 					"response": []
 				},
 				{
-					"name": "Get Taxis",
+					"name": "Taxis List",
 					"request": {
 						"url": "{{url}}/{{trinusAppName}}/api/v1/taxis",
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Taxis List HTML",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/taxis",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/html",
+								"description": ""
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": []
@@ -196,6 +222,20 @@
 						"body": {
 							"mode": "formdata",
 							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update Taxi",
+					"request": {
+						"url": "{{url}}/{{trinusAppName}}/api/v1/taxis",
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idTaxi\" : \"F87D167E-1333-0EE5-FF0C-6CA524E60B00\",\n    \"status\" : \"ACTIVE\"\n}"
 						},
 						"description": ""
 					},
