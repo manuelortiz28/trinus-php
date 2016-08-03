@@ -1,6 +1,5 @@
 <html>
 <head>
-
     <style type="text/css">
         table {
             font-family: verdana,arial,sans-serif;
@@ -61,23 +60,34 @@
 
                     $.each(services, function (index, service) {
 
+                        var vehicleModel = "";
+                        var vehiclePlates = "";
+                        var driverName = "";
+
                         if (service.vehicle != null && typeof service.vehicle !== "undefined") {
-                            $body.append(
-                                $("<tr></tr>").append(
-                                    $("<td></td>").html(service.vehicle.model)
-                                ).append(
-                                    $("<td></td>").html(service.vehicle.plates)
-                                ).append(
-                                    $("<td></td>").html(service.status)
-                                ).append(
-                                    $("<td></td>").html(service.vehicle.driver.name)
-                                ).append(
-                                    $("<td></td>").html(service.user)
-                                ).append(
-                                    $("<td></td>").html(service.targetAddress)
-                                )
-                            );
+                            vehicleModel = service.vehicle.model;
+                            vehiclePlates = service.vehicle.plates;
+
+                            if (service.vehicle.driver != null && typeof service.vehicle.driver !== "undefined") {
+                                driverName = service.vehicle.driver.name;
+                            }
                         }
+
+                        $body.append(
+                            $("<tr></tr>").append(
+                                $("<td></td>").html(vehicleModel)
+                            ).append(
+                                $("<td></td>").html(vehiclePlates)
+                            ).append(
+                                $("<td></td>").html(service.status)
+                            ).append(
+                                $("<td></td>").html(driverName)
+                            ).append(
+                                $("<td></td>").html(service.user)
+                            ).append(
+                                $("<td></td>").html(service.targetAddress)
+                            )
+                        );
                     });
                 },
                 beforeSend: setHeader

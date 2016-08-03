@@ -44,7 +44,7 @@ class ServicesManager implements InjectionAwareInterface
 
         //Creates service record
         $pService = new yummy\models\TaxiService();
-        $pService->setProperty("status", "created");
+        $pService->setProperty("status", "CREATED");
         $pService->setProperty("user", $userData->userId);
         $pService->setProperty("startLatitude", $userData->latitude);
         $pService->setProperty("startLongitude", $userData->longitude);
@@ -61,18 +61,22 @@ class ServicesManager implements InjectionAwareInterface
                                                             array("objectId", "status", "user"),
                                                             $pService);
 
-        $this->sendNewServicePushNotification($pService);
+        $taxi = $this->getAvailableTaxi($pService->objectId);
+        $response["taxi"] = $taxi->objectId;//TODO Remove this field, only for debugging purposes
+
+        $this->sendNewServicePushNotification($pService, $taxi->driver);
 
         return $response;
     }
 
-    private function sendNewServicePushNotification($service) {
+    private function getAvailableTaxi($idService) {
+        //Use $idService in order to exclude taxis that reject to take this service
 
         //Get First available taxi
         $taxiQuery = new BackendlessDataQuery();
         $taxiQuery->setDepth(1);
 
-        $condition = "status = 'available'";
+        $condition = "status = 'ACTIVE' and driver IS NOT NULL";
 
         $taxiQuery->setWhereClause($condition);
         $results = Backendless::$Persistence->of('Taxi')->find($taxiQuery)->getAsClasses();
@@ -81,8 +85,10 @@ class ServicesManager implements InjectionAwareInterface
             throw new YummyException("No data found", 422);
         }
 
-        $driver = $results[0]->driver;
+        return $results[rand(1, count($results)) - 1];
+    }
 
+    private function sendNewServicePushNotification($service, $driver) {
         $body = [];
         $body["idService"] = $service->objectId;
         $body["destinationAddress"] = $service->targetAddress;
@@ -111,7 +117,7 @@ class ServicesManager implements InjectionAwareInterface
         $message["type"] = "SERVICE_CHANGE_STATUS";
         $message["message"] = json_encode($body);
 
-        if ($service->status == "ACCEPTED" || $service->status == "ARRIVING"  || $service->status == "CANCELEDBYDRIVER") {
+        if ($service->status == "ACCEPTED" || $service->status == "ARRIVING"  || $service->status == "CANCELLED_BY_DRIVER") {
             $targetGCMToken = $service->getProperty("userGCMToken");
         } else {
             $targetGCMToken = $service->driver->getProperty("gcmToken");
@@ -190,7 +196,6 @@ class ServicesManager implements InjectionAwareInterface
         //Update service status
         $service->status = $serviceInfo->status;
 
-        //Is it assigning a driver?
         if (isset($serviceInfo->idDriver)) {
             //Get taxi
             $taxiQuery = new BackendlessDataQuery();

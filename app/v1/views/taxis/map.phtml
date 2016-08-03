@@ -209,7 +209,29 @@
                 displayingServices = !displayingServices;
             }
 
+            function showTaxis() {
+                if (displayingServices) {
+                    $("#divServices").html("<body></body>");
+                } else {
+                    $("#divServices").load("taxis");
+                }
+
+                displayingServices = !displayingServices;
+            }
+
         </script>
+
+        
+
+        <div style="position: absolute; right:80px; top:10px;">
+
+            <a href="javascript:showTaxis();">
+                <div style="background-image: url('../../public/images/floating_button_background_48x.png'); width: 48px; height: 48px; display: table-cell; vertical-align:middle; text-align: center;">
+                    <img src="../../public/images/ic_directions_car_black_24dp_1x.png" width="24px" height="24px" />
+                </div>
+
+            </a>
+        </div>
 
         <div style="position: absolute; right:20px; top:10px;">
 
@@ -220,6 +242,7 @@
 
             </a>
         </div>
+
         <div id="divServices" style="position: absolute; right:20px; top:70px;"></div>
 
 
